@@ -23,6 +23,8 @@
             background-color: #194569;
             padding: 20px;
             color: white;
+            flex-wrap: wrap; /* Adicionado para permitir quebra de linha em dispositivos menores */
+            text-align: center;
         }
 
         .header-container img {
@@ -94,6 +96,18 @@
             padding: 10px;
             width: 100%;
         }
+
+        @media (max-width: 600px) {
+            .header-text {
+                font-size: 1.5em;
+                margin-top: 10px;
+            }
+
+            .header-container img {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
     </style>
 </head>
 
@@ -148,4 +162,5 @@
 </body>
 
 </html>
+
 

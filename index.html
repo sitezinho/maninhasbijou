@@ -18,19 +18,19 @@
 
         .header-container {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             background-color: #194569;
             padding: 20px;
             color: white;
-            flex-wrap: wrap;
             text-align: center;
         }
 
         .header-container img {
             max-width: 150px;
             height: auto;
-            margin-right: 20px;
+            margin-bottom: 10px;
             border-radius: 50%;
         }
 
@@ -39,6 +39,21 @@
             font-weight: 400;
             font-size: 2.5em;
             color: white;
+            margin-bottom: 10px;
+        }
+
+        .category-links {
+            font-family: 'Kalnia', sans-serif;
+            font-weight: 400;
+            font-size: 1.2em; /* Tamanho menor para diferenciar do título */
+            color: #ffffff;
+            margin-top: 10px;
+        }
+
+        .category-links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 10px;
         }
 
         main {
@@ -97,29 +112,6 @@
             width: 100%;
         }
 
-        .section {
-            padding: 20px;
-            text-align: center;
-            background-color: #DBECF4;
-        }
-
-        .section a {
-            text-decoration: none;
-            color: #194569;
-            transition: color 0.3s ease;
-        }
-
-        .section a:hover {
-            color: #5F84A2;
-        }
-
-        .section h2 {
-            font-family: 'Kalnia', sans-serif;
-            font-size: 2.5em;
-            color: #194569;
-            margin-bottom: 20px;
-        }
-
         @media (max-width: 600px) {
             .header-text {
                 font-size: 1.5em;
@@ -130,15 +122,6 @@
                 margin-right: 0;
                 margin-bottom: 10px;
             }
-
-                        .category h2 {
-        font-family: 'Kalnia', sans-serif;
-        font-weight: 400;
-        font-size: 1.5em; /* Tamanho ajustado para ser igual ao subtítulo das fotos */
-        color: #ffffff;
-        margin-bottom: 20px;
-        text-align: center;
-    }
         }
     </style>
 </head>
@@ -149,16 +132,13 @@
         <div class="header-text">
             ManinhasBijou
         </div>
+        <div class="category-links">
+            <a href="index.html">Página Principal</a>
+            <a href="realidade-desejada.html">Realidade Desejada</a>
+        </div>
     </div>
-
-    <!-- Nova Seção - Realidade Desejada -->
-    <section class="section" id="realidade-desejada">
-        <a href="pagina-realidade-desejada.html">
-            <h2>Realidade Desejada</h2>
-        </a>
-    </section>
-
     <main>
+        
         <div class="product">
             <img src="fotosprodutos/chokerolhogrego.jpg" alt="Produto 1">
             <h2>Choker 'Olho Perolado'</h2>

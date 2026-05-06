@@ -16,6 +16,10 @@
   --bg: #CADEED;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -30,12 +34,12 @@ body {
 }
 
 .hero img {
-  width: 120px;
+  width: 150px;
   animation: float 3s ease-in-out infinite;
 }
 
-.hero h1 {
-  font-family: 'Nunito';
+@keyframes float {
+  50% { transform: translateY(-10px); }
 }
 
 .hero p {
@@ -48,69 +52,153 @@ body {
   display: block;
   margin-top: 10px;
   color: #91AEC4;
+  font-size: 18px;
 }
 
 .btn {
+  display: inline-block;
+  margin-top: 15px;
   background: var(--azul);
   color: white;
-  padding: 12px 20px;
-  border-radius: 20px;
+  padding: 12px 22px;
+  border-radius: 25px;
   text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: 0.2s;
 }
 
-/* BANNER */
+.btn:hover {
+  transform: scale(1.05);
+}
+
+/* BANNER - CORRIGIDO */
 .promo {
   overflow: hidden;
   background: var(--azul);
   color: white;
   padding: 8px 0;
-  font-size: 14px;
   white-space: nowrap;
-  letter-spacing: 0.5px;
-  font-weight: 500;
+  position: relative;
 }
 
 .promo-track {
-  display: flex;
-  gap: 300px;
+  display: inline-flex;
+  gap: 200px;
   animation: slide 20s linear infinite;
 }
 
-.promo-track span {
-  white-space: nowrap;
-}
-
 @keyframes slide {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
-@keyframes float {
-  50% { transform: translateY(-10px);}
+/* MAIS VENDIDOS */
+.mais-vendidos {
+  padding: 20px;
 }
 
-/* CATEGORIAS */
-.categories {
+.scroll-vendidos {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   overflow-x: auto;
-  padding: 10px;
+  padding-bottom: 10px;
 }
 
-.categories button {
+.card-vendido {
+  flex: 0 0 170px;
   background: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 20px;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
   cursor: pointer;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 0.5s;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-vendido.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-vendido img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;  /* mantém proporção, corta se necessário */
+}
+
+.card-vendido p {
+  text-align: center;
+  margin: 8px 0 4px 0;
+  padding: 0 5px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.card-vendido .price {
+  text-align: center;
+  display: block;
+  margin: 0 0 10px 0;
+  padding: 0;
+  color: var(--azul);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* TAG */
+.tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--azul);
+  color: white;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+/* BRILHO */
+.card-vendido::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+  pointer-events: none;
+}
+
+.card-vendido:hover::after,
+.card-vendido:active::after {
+  animation: brilho 0.8s ease;
+}
+
+@keyframes brilho {
+  100% { left: 150%; }
 }
 
 /* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(2,1fr);
   gap: 15px;
-  padding: 30px 20px;
+  padding: 20px;
+}
+
+@media (min-width:600px){
+  .grid { grid-template-columns: repeat(3,1fr);}
+}
+@media (min-width:900px){
+  .grid { grid-template-columns: repeat(4,1fr);}
 }
 
 .card {
@@ -118,50 +206,39 @@ body {
   border-radius: 15px;
   overflow: hidden;
   text-align: center;
-  position: relative;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.05);
   cursor: pointer;
-  transition: 0.3s;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 0.5s;
+  display: flex;
+  flex-direction: column;
 }
 
-.card:hover {
-  transform: translateY(-5px) scale(1.03);
+.card.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* 🔥 AJUSTE PRINCIPAL DAS IMAGENS */
 .card img {
   width: 100%;
-  height: 150px; /* controla tamanho */
-  object-fit: cover; /* corta sem distorcer */
-  transition: 0.3s;
-}
-
-.card:hover img {
-  transform: scale(1.05);
+  /* VOLTEI AO TAMANHO ANTERIOR (mais quadrado/vertical) */
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
 }
 
 .card p {
-  margin: 5px 0;
+  margin: 8px 0 4px 0;
+  padding: 0 5px;
+  font-weight: 500;
 }
 
-.price {
+.card .price {
+  display: block;
+  margin: 0 0 12px 0;
   color: var(--azul);
-  font-size: 13px;
-}
-
-/* LIKE */
-.like-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: white;
-  border-radius: 50%;
-  padding: 6px 8px;
-  cursor: pointer;
-}
-
-.like-btn.liked {
-  color: red;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 /* MODAL */
@@ -174,6 +251,7 @@ body {
   display: none;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal.active {
@@ -183,13 +261,16 @@ body {
 .modal-content {
   background: white;
   border-radius: 20px;
-  max-width: 400px;
   width: 90%;
+  max-width: 400px;
   overflow: hidden;
+  position: relative;
 }
 
-.modal-content img {
+.modal img {
   width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
 }
 
 .modal-body {
@@ -200,19 +281,40 @@ body {
   display: block;
   background: #25D366;
   color: white;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 14px;
+  border-radius: 14px;
   text-align: center;
+  font-weight: 700;
+  margin-top: 10px;
+  box-shadow: 0 5px 15px rgba(37,211,102,0.3);
+  transition: 0.2s;
   text-decoration: none;
+}
+
+.whatsapp-btn:hover {
+  transform: scale(1.05);
 }
 
 .close {
   position: absolute;
-  top: 20px;
   right: 20px;
+  top: 20px;
+  background: rgba(0,0,0,0.6);
   color: white;
-  font-size: 20px;
+  font-size: 28px;
   cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  z-index: 1001;
+}
+
+.close:hover {
+  background: rgba(0,0,0,0.8);
 }
 
 </style>
@@ -221,7 +323,7 @@ body {
 <body>
 
 <section class="hero">
-  <img src="logomb.png">
+  <img src="logomb.png" alt="Logo ManinhasBijou">
   <h1>ManinhasBijou</h1>
   <p>Feito com carinho 💙</p>
   <a href="#catalogo" class="btn">Ver catálogo</a>
@@ -231,28 +333,30 @@ body {
   <div class="promo-track">
     <span>💙 Acima de R$50,00, você garante um brinde! ✨</span>
     <span>💙 Acima de R$50,00, você garante um brinde! ✨</span>
-    <span>💙 Acima de R$50,00, você garante um brinde! ✨</span>
-    <span>💙 Acima de R$50,00, você garante um brinde! ✨</span>
   </div>
 </div>
 
-<div class="categories">
-  <button onclick="filtrar('todos')">Todos</button>
-  <button onclick="filtrar('Pulseira')">Pulseiras</button>
-  <button onclick="filtrar('Colar')">Colares</button>
-  <button onclick="mostrarFavoritos()">Meus fav ❤️</button>
-</div>
+<section class="mais-vendidos">
+  <h2>⭐ Mais vendidos</h2>
+  <div class="scroll-vendidos" id="maisVendidos"></div>
+</section>
 
 <section id="catalogo" class="grid"></section>
 
+<!-- MODAL -->
 <div id="modal" class="modal">
   <span class="close" onclick="fecharModal()">×</span>
   <div class="modal-content">
-    <img id="modal-img">
+    <img id="modal-img" alt="Produto">
     <div class="modal-body">
       <h2 id="modal-title"></h2>
       <p id="modal-desc"></p>
-      <a id="whatsapp-link" class="whatsapp-btn" target="_blank">Pedir pelo WhatsApp</a>
+      <p style="font-size:13px; opacity:0.7;">
+        Envio rápido + atendimento personalizado 💙
+      </p>
+      <a id="whatsapp-link" class="whatsapp-btn" target="_blank">
+        ✨ Comprar via WhatsApp
+      </a>
     </div>
   </div>
 </div>
@@ -261,71 +365,87 @@ body {
 
 const numero = "5511939615755";
 
+// Array completo de produtos
 const produtos = [
-  {nome:"Colar Azul", tipo:"Colar", preco:"15,99", img:"img/colarazul.png"},
-  {nome:"Pulseira Drama", tipo:"Pulseira", preco:"11,90", img:"img/pulseiradrama.jpg"}
+  {nome:"Colar Azul Celestial", tipo:"Colar", preco:"15,99", img:"img/colarazul.png", destaque:true},
+  {nome:"Pulseira Drama", tipo:"Pulseira", preco:"11,90", img:"img/pulseiradrama.jpg", destaque:true},
+  {nome:"Anel Coração Minimalista", tipo:"Anel", preco:"9,90", img:"img/anelcoracao.jpg", destaque:false},
+  {nome:"Brinco Argola Pequena", tipo:"Brinco", preco:"12,50", img:"img/brincoargola.jpg", destaque:false},
+  {nome:"Colar Pérola Fake", tipo:"Colar", preco:"18,90", img:"img/colarperola.jpg", destaque:false},
+  {nome:"Tornozeleira Dourada", tipo:"Tornozeleira", preco:"14,90", img:"img/tornozeleira.jpg", destaque:false},
+  {nome:"Pulseira Corrente Macia", tipo:"Pulseira", preco:"10,90", img:"img/pulseiracorrente.jpg", destaque:true},
+  {nome:"Anel Ajustável Folheado", tipo:"Anel", preco:"8,90", img:"img/anelfolheado.jpg", destaque:false},
+  {nome:"Brinco Estrela Cadente", tipo:"Brinco", preco:"16,90", img:"img/brincoestrela.jpg", destaque:false},
+  {nome:"Colar Gota Azul", tipo:"Colar", preco:"22,90", img:"img/colargota.jpg", destaque:true}
 ];
 
-let curtidos = JSON.parse(localStorage.getItem("curtidos")) || [];
-
-function render(lista){
+function render(){
   const grid = document.getElementById("catalogo");
   grid.innerHTML = "";
 
-  lista.forEach(p => {
-    const liked = curtidos.includes(p.nome);
-
+  produtos.forEach(p => {
     grid.innerHTML += `
-      <div class="card" onclick="abrirModal('${p.nome}','${p.tipo}','${p.img}')">
-        <div class="like-btn ${liked ? 'liked':''}" onclick="curtir(event,'${p.nome}')">
-          ${liked ? '❤️':'♡'}
-        </div>
-        <img src="${p.img}">
+      <div class="card" onclick="abrirModal('${p.nome}','${p.tipo} - Peça única e delicada','${p.img}')">
+        <img src="${p.img}" alt="${p.nome}" onerror="this.src='https://placehold.co/600x800?text=Imagem+Breve'">
         <p>${p.nome}</p>
         <span class="price">R$ ${p.preco}</span>
       </div>
     `;
   });
+
+  animarEntrada();
 }
 
-function filtrar(tipo){
-  if(tipo==="todos") return render(produtos);
-  render(produtos.filter(p=>p.tipo===tipo));
+function renderVendidos(){
+  const area = document.getElementById("maisVendidos");
+  area.innerHTML = "";
+
+  const destaqueProdutos = produtos.filter(p => p.destaque === true);
+  
+  destaqueProdutos.forEach(p => {
+    area.innerHTML += `
+      <div class="card-vendido" onclick="abrirModal('${p.nome}','${p.tipo} - Peça única e delicada','${p.img}')">
+        <div class="tag">Mais vendido</div>
+        <img src="${p.img}" alt="${p.nome}" onerror="this.src='https://placehold.co/600x800?text=Imagem+Breve'">
+        <p>${p.nome}</p>
+        <span class="price">R$ ${p.preco}</span>
+      </div>
+    `;
+  });
+
+  animarEntrada();
 }
 
-function mostrarFavoritos(){
-  render(produtos.filter(p=>curtidos.includes(p.nome)));
+/* animação ao aparecer */
+function animarEntrada(){
+  const elementos = document.querySelectorAll('.card, .card-vendido');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('show');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  elementos.forEach(el => observer.observe(el));
 }
 
-function curtir(e,nome){
-  e.stopPropagation();
-
-  if(curtidos.includes(nome)){
-    curtidos = curtidos.filter(i=>i!==nome);
-  } else {
-    curtidos.push(nome);
-  }
-
-  localStorage.setItem("curtidos",JSON.stringify(curtidos));
-  render(produtos);
-  if(curtidos.length>=3) sugerir();
-}
-
-function sugerir(){
-  if(confirm("Você já tem vários favoritos 💙 Quer finalizar no WhatsApp?")){
-    let msg="Oi! Quero esses itens:\n\n";
-    curtidos.forEach(i=>msg+="• "+i+"\n");
-    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`);
-  }
-}
-
-function abrirModal(nome,desc,img){
-  document.getElementById("modal").classList.add("active");
+function abrirModal(nome, desc, img){
+  const modal = document.getElementById("modal");
+  modal.classList.add("active");
+  
   document.getElementById("modal-title").innerText = nome;
   document.getElementById("modal-desc").innerText = desc;
   document.getElementById("modal-img").src = img;
+  
+  // Tratamento para imagem quebrada no modal
+  const modalImg = document.getElementById("modal-img");
+  modalImg.onerror = function() {
+    this.src = 'https://placehold.co/600x800?text=Imagem+Breve';
+  };
 
-  const msg=`Oi! Quero esse produto: ${nome}`;
+  const msg = `Oi! Tenho interesse nesse produto: ${nome} - ${desc}`;
   document.getElementById("whatsapp-link").href =
     `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
 }
@@ -334,7 +454,16 @@ function fecharModal(){
   document.getElementById("modal").classList.remove("active");
 }
 
-render(produtos);
+// Fechar modal ao clicar fora do conteúdo
+window.onclick = function(event) {
+  const modal = document.getElementById("modal");
+  if (event.target === modal) {
+    fecharModal();
+  }
+}
+
+render();
+renderVendidos();
 
 </script>
 

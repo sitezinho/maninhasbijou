@@ -7,13 +7,19 @@
 <title>ManinhasBijou</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Poppins:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <style>
 
 :root {
   --azul-escuro: #194569;
   --azul: #5F84A2;
+  --azul-claro: #8AABBF;
   --bg: #CADEED;
+  --shopee-laranja: #EE4D2D;
+  --shopee-laranja-claro: #FF6B4A;
+  --shopee-amarelo: #FFC700;
+  --favorito-vermelho: #ff5e5e;
 }
 
 html {
@@ -72,7 +78,7 @@ body {
   transform: scale(1.05);
 }
 
-/* BANNER - CORRIGIDO */
+/* BANNER */
 .promo {
   overflow: hidden;
   background: var(--azul);
@@ -89,12 +95,46 @@ body {
 }
 
 @keyframes slide {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* CATEGORIAS */
+.categorias {
+  padding: 20px 20px 10px 20px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: thin;
+}
+
+.categorias-wrapper {
+  display: inline-flex;
+  gap: 12px;
+}
+
+.cat-btn {
+  background: white;
+  border: 2px solid var(--azul);
+  color: var(--azul-escuro);
+  padding: 8px 20px;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.cat-btn.active {
+  background: var(--azul);
+  color: white;
+  border-color: var(--azul);
+}
+
+.cat-btn:hover {
+  transform: scale(1.05);
+  background: var(--azul);
+  color: white;
 }
 
 /* MAIS VENDIDOS */
@@ -131,7 +171,7 @@ body {
 .card-vendido img {
   width: 100%;
   height: 170px;
-  object-fit: cover;  /* mantém proporção, corta se necessário */
+  object-fit: cover;
 }
 
 .card-vendido p {
@@ -152,7 +192,6 @@ body {
   font-weight: 600;
 }
 
-/* TAG */
 .tag {
   position: absolute;
   top: 10px;
@@ -165,7 +204,6 @@ body {
   z-index: 1;
 }
 
-/* BRILHO */
 .card-vendido::after {
   content: "";
   position: absolute;
@@ -177,8 +215,7 @@ body {
   pointer-events: none;
 }
 
-.card-vendido:hover::after,
-.card-vendido:active::after {
+.card-vendido:hover::after {
   animation: brilho 0.8s ease;
 }
 
@@ -212,6 +249,7 @@ body {
   transition: 0.5s;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .card.show {
@@ -221,7 +259,6 @@ body {
 
 .card img {
   width: 100%;
-  /* VOLTEI AO TAMANHO ANTERIOR (mais quadrado/vertical) */
   height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
@@ -241,17 +278,128 @@ body {
   font-size: 14px;
 }
 
-/* MODAL */
+/* BOTÃO FAVORITAR */
+.fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: 0.2s;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.fav-btn i {
+  font-size: 18px;
+  color: #ccc;
+  transition: 0.2s;
+}
+
+.fav-btn.active i {
+  color: var(--favorito-vermelho);
+}
+
+.fav-btn:hover {
+  transform: scale(1.1);
+}
+
+/* CARD FLUTUANTE DE FAVORITOS */
+.fav-card {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  border-radius: 20px;
+  padding: 15px 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 999;
+  display: none;
+  animation: slideIn 0.3s ease;
+  max-width: 280px;
+  border-left: 5px solid var(--favorito-vermelho);
+}
+
+.fav-card.show {
+  display: block;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.fav-card h4 {
+  margin: 0 0 10px 0;
+  color: var(--azul-escuro);
+}
+
+.fav-card p {
+  margin: 5px 0;
+  font-size: 0.85rem;
+}
+
+.fav-card .fav-total {
+  font-weight: 700;
+  color: var(--favorito-vermelho);
+  font-size: 1.2rem;
+}
+
+.fav-card .whatsapp-fav {
+  display: inline-block;
+  background: #25D366;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: 0.2s;
+}
+
+.fav-card .whatsapp-fav:hover {
+  transform: scale(1.05);
+}
+
+.close-fav {
+  float: right;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #999;
+}
+
+.close-fav:hover {
+  color: #333;
+}
+
+/* MODAL (mantido igual) */
 .modal {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.7);
   display: none;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(5px);
 }
 
 .modal.active {
@@ -260,61 +408,273 @@ body {
 
 .modal-content {
   background: white;
-  border-radius: 20px;
+  border-radius: 30px;
   width: 90%;
-  max-width: 400px;
-  overflow: hidden;
+  max-width: 1000px;
+  max-height: 85vh;
+  overflow-y: auto;
   position: relative;
+  animation: modalFadeIn 0.3s ease;
 }
 
-.modal img {
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .modal-layout {
+    flex-direction: row;
+  }
+  .modal-image-area {
+    flex: 1;
+    border-radius: 30px 0 0 30px;
+    overflow: hidden;
+  }
+  .modal-info-area {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+.modal-image-area {
+  background: #f5f5f5;
+}
+
+.modal-image-area img {
   width: 100%;
+  height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-}
-
-.modal-body {
-  padding: 15px;
-}
-
-.whatsapp-btn {
   display: block;
+}
+
+.modal-info-area {
+  padding: 20px;
+}
+
+.modal-info-area h2 {
+  font-size: 1.8rem;
+  margin: 0 0 10px 0;
+  color: var(--azul-escuro);
+}
+
+.modal-tipo {
+  display: inline-block;
+  background: var(--bg);
+  color: var(--azul-escuro);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.modal-preco {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--azul);
+  margin: 15px 0;
+}
+
+.modal-desc {
+  color: #555;
+  line-height: 1.6;
+  margin: 15px 0;
+}
+
+.modal-beneficios {
+  background: var(--bg);
+  padding: 15px;
+  border-radius: 20px;
+  margin: 20px 0;
+}
+
+.modal-beneficios p {
+  margin: 8px 0;
+  font-size: 0.9rem;
+}
+
+.modal-beneficios span {
+  margin-right: 10px;
+}
+
+.whatsapp-btn-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   background: #25D366;
   color: white;
-  padding: 14px;
-  border-radius: 14px;
+  padding: 16px 24px;
+  border-radius: 50px;
   text-align: center;
   font-weight: 700;
-  margin-top: 10px;
-  box-shadow: 0 5px 15px rgba(37,211,102,0.3);
-  transition: 0.2s;
+  font-size: 1.1rem;
+  margin-top: 20px;
   text-decoration: none;
+  transition: 0.2s;
+  box-shadow: 0 5px 20px rgba(37,211,102,0.3);
 }
 
-.whatsapp-btn:hover {
-  transform: scale(1.05);
+.whatsapp-btn-modal:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 25px rgba(37,211,102,0.4);
 }
 
-.close {
+.close-modal {
   position: absolute;
   right: 20px;
   top: 20px;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.7);
   color: white;
   font-size: 28px;
   cursor: pointer;
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   z-index: 1001;
+  transition: 0.2s;
+  backdrop-filter: blur(4px);
 }
 
-.close:hover {
-  background: rgba(0,0,0,0.8);
+.close-modal:hover {
+  background: rgba(0,0,0,0.9);
+  transform: rotate(90deg);
+}
+
+/* SEÇÃO SHOPEE */
+.shopee-section {
+  margin: 60px 20px 40px;
+  padding: 30px 25px;
+  background: linear-gradient(135deg, #FFF8F0 0%, #FFEFDF 100%);
+  border-radius: 40px;
+  box-shadow: 0 15px 35px rgba(238, 77, 45, 0.15);
+  border: 1px solid rgba(238, 77, 45, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.shopee-section:hover {
+  transform: translateY(-5px);
+}
+
+.shopee-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.shopee-icon {
+  font-size: 2.5rem;
+}
+
+.shopee-section h3 {
+  font-size: 1.8rem;
+  color: var(--shopee-laranja);
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.shopee-divider {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--shopee-laranja), var(--shopee-amarelo));
+  border-radius: 4px;
+  margin: 15px auto;
+}
+
+.shopee-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.shopee-content p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #4a4a4a;
+  margin-bottom: 20px;
+}
+
+.shopee-highlight {
+  background: white;
+  border-radius: 30px;
+  padding: 15px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-top: 10px;
+}
+
+.shopee-highlight span {
+  font-weight: 600;
+  color: var(--shopee-laranja);
+}
+
+.shopee-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--shopee-laranja);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  margin-top: 25px;
+  transition: 0.2s;
+  box-shadow: 0 6px 14px rgba(238, 77, 45, 0.3);
+}
+
+.shopee-btn:hover {
+  background: var(--shopee-laranja-claro);
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(238, 77, 45, 0.4);
+}
+
+.shopee-note {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Rodapé */
+.footer {
+  text-align: center;
+  padding: 30px 20px;
+  font-size: 0.8rem;
+  color: var(--azul);
+  border-top: 1px solid rgba(95,132,162,0.2);
+  margin-top: 20px;
 }
 
 </style>
@@ -336,6 +696,20 @@ body {
   </div>
 </div>
 
+<!-- CATEGORIAS -->
+<div class="categorias">
+  <div class="categorias-wrapper" id="categoriasWrapper">
+    <button class="cat-btn active" data-categoria="todos">Todos</button>
+    <button class="cat-btn" data-categoria="Pulseira">Pulseiras</button>
+    <button class="cat-btn" data-categoria="Colar">Colares</button>
+    <button class="cat-btn" data-categoria="Phone Strap">Phone Straps</button>
+    <button class="cat-btn" data-categoria="KeyCharm">KeyCharms</button>
+    <button class="cat-btn" data-categoria="Anel">Anéis</button>
+    <button class="cat-btn" data-categoria="Brinco">Brincos</button>
+    <button class="cat-btn" data-categoria="Tornozeleira">Tornozeleiras</button>
+  </div>
+</div>
+
 <section class="mais-vendidos">
   <h2>⭐ Mais vendidos</h2>
   <div class="scroll-vendidos" id="maisVendidos"></div>
@@ -343,20 +717,76 @@ body {
 
 <section id="catalogo" class="grid"></section>
 
+<!-- SEÇÃO SHOPEE -->
+<section class="shopee-section">
+  <div class="shopee-header">
+    <div class="shopee-icon">🛍️</div>
+    <h3>Também estamos na Shopee!</h3>
+    <div class="shopee-icon">⭐</div>
+  </div>
+  <div class="shopee-divider"></div>
+  <div class="shopee-content">
+    <p>
+      Se você prefere comprar por uma plataforma com <strong>frete incluso e proteção ao comprador</strong>, pode nos encontrar na Shopee! 
+      Lá os valores podem ser <strong>um pouquinho diferentes</strong> — ajustamos para conseguir arcar com as taxas e o frete, mantendo a qualidade e o carinho em cada peça. 💙
+    </p>
+    <div class="shopee-highlight">
+      <span>✨ Atenção:</span>
+      <span>Os preços na Shopee podem ser ligeiramente maiores para compensar os custos da plataforma e o frete grátis em muitos pedidos.</span>
+    </div>
+    <a href="https://shopee.com.br/maninhasbijou" class="shopee-btn" target="_blank" rel="noopener noreferrer">
+      <span>📲</span> Conhecer nossa loja na Shopee
+      <span>→</span>
+    </a>
+    <div class="shopee-note">
+      <span>🔸</span> Você escolhe: atendimento direto via WhatsApp (preço mais baixo) ou comodidade da Shopee
+      <span>🔸</span>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <p>✨ ManinhasBijou — Feito com carinho para você ✨</p>
+  <p style="font-size: 0.7rem;">💙 Brinde especial acima de R$50 💙</p>
+</div>
+
+<!-- CARD FLUTUANTE DE FAVORITOS -->
+<div id="favCard" class="fav-card">
+  <span class="close-fav" onclick="fecharFavCard()">×</span>
+  <h4>💖 Você tem <span id="favCountDisplay">0</span> favoritos!</h4>
+  <p>Que tal finalizar sua seleção?</p>
+  <div id="favLista" style="font-size:0.75rem; color:#555; margin:8px 0;"></div>
+  <a href="#" id="whatsappFavLink" class="whatsapp-fav" target="_blank">
+    ✨ Finalizar compra no WhatsApp
+  </a>
+</div>
+
 <!-- MODAL -->
 <div id="modal" class="modal">
-  <span class="close" onclick="fecharModal()">×</span>
+  <span class="close-modal" onclick="fecharModal()">×</span>
   <div class="modal-content">
-    <img id="modal-img" alt="Produto">
-    <div class="modal-body">
-      <h2 id="modal-title"></h2>
-      <p id="modal-desc"></p>
-      <p style="font-size:13px; opacity:0.7;">
-        Envio rápido + atendimento personalizado 💙
-      </p>
-      <a id="whatsapp-link" class="whatsapp-btn" target="_blank">
-        ✨ Comprar via WhatsApp
-      </a>
+    <div class="modal-layout">
+      <div class="modal-image-area">
+        <img id="modal-img" alt="Produto">
+      </div>
+      <div class="modal-info-area">
+        <div>
+          <h2 id="modal-title"></h2>
+          <div class="modal-tipo" id="modal-tipo"></div>
+          <div class="modal-preco" id="modal-preco"></div>
+          <div class="modal-desc" id="modal-desc"></div>
+          <div class="modal-beneficios">
+            <p><span>✨</span> Envio rápido para todo Brasil</p>
+            <p><span>💙</span> Atendimento personalizado</p>
+            <p><span>🎁</span> Brinde especial acima de R$50</p>
+            <p><span>🔒</span> Compra 100% segura</p>
+          </div>
+        </div>
+        <a id="whatsapp-link" class="whatsapp-btn-modal" target="_blank">
+          <span>📱</span> Comprar via WhatsApp
+          <span>→</span>
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -365,46 +795,108 @@ body {
 
 const numero = "5511939615755";
 
-// Array completo de produtos
+// BASE DE PRODUTOS (adicionando categoria)
 const produtos = [
-  {nome:"Colar Azul Celestial", tipo:"Colar", preco:"15,99", img:"img/colarazul.png", destaque:true},
-  {nome:"Pulseira Drama", tipo:"Pulseira", preco:"11,90", img:"img/pulseiradrama.jpg", destaque:true},
-  {nome:"Anel Coração Minimalista", tipo:"Anel", preco:"9,90", img:"img/anelcoracao.jpg", destaque:false},
-  {nome:"Brinco Argola Pequena", tipo:"Brinco", preco:"12,50", img:"img/brincoargola.jpg", destaque:false},
-  {nome:"Colar Pérola Fake", tipo:"Colar", preco:"18,90", img:"img/colarperola.jpg", destaque:false},
-  {nome:"Tornozeleira Dourada", tipo:"Tornozeleira", preco:"14,90", img:"img/tornozeleira.jpg", destaque:false},
-  {nome:"Pulseira Corrente Macia", tipo:"Pulseira", preco:"10,90", img:"img/pulseiracorrente.jpg", destaque:true},
-  {nome:"Anel Ajustável Folheado", tipo:"Anel", preco:"8,90", img:"img/anelfolheado.jpg", destaque:false},
-  {nome:"Brinco Estrela Cadente", tipo:"Brinco", preco:"16,90", img:"img/brincoestrela.jpg", destaque:false},
-  {nome:"Colar Gota Azul", tipo:"Colar", preco:"22,90", img:"img/colargota.jpg", destaque:true}
+  {nome:"Colar Azul Celestial", tipo:"Colar", categoria:"Colar", preco:"15,99", img:"img/colarazul.png", destaque:true, descricao:"Colar delicado com pingente azul celestial. Peça única que traz tranquilidade e estilo para o seu dia a dia."},
+  {nome:"Pulseira Drama", tipo:"Pulseira", categoria:"Pulseira", preco:"11,90", img:"img/pulseiradrama.jpg", destaque:true, descricao:"Pulseira com acabamento dramático e sofisticado. Ideal para looks que pedem um toque de personalidade."},
+  {nome:"Anel Coração Minimalista", tipo:"Anel", categoria:"Anel", preco:"9,90", img:"img/anelcoracao.jpg", destaque:false, descricao:"Anel delicado com coração minimalista. Perfeito para usar sozinho ou combinar com outras peças."},
+  {nome:"Brinco Argola Pequena", tipo:"Brinco", categoria:"Brinco", preco:"12,50", img:"img/brincoargola.jpg", destaque:false, descricao:"Argolas pequenas e elegantes, perfeitas para o uso diário. Conforto e estilo em um só lugar."},
+  {nome:"Colar Pérola Fake", tipo:"Colar", categoria:"Colar", preco:"18,90", img:"img/colarperola.jpg", destaque:false, descricao:"Colar com pérolas delicadas que trazem um ar romântico e sofisticado ao visual."},
+  {nome:"Phone Strap Floral", tipo:"Phone Strap", categoria:"Phone Strap", preco:"13,90", img:"img/phonestrap.jpg", destaque:true, descricao:"Acessório charmoso para seu celular. Prático e estiloso!"},
+  {nome:"KeyCharm Coração", tipo:"KeyCharm", categoria:"KeyCharm", preco:"8,90", img:"img/keycharm.jpg", destaque:false, descricao:"Chaveiro delicato para dar um toque fofo às suas chaves."},
+  {nome:"Tornozeleira Dourada", tipo:"Tornozeleira", categoria:"Tornozeleira", preco:"14,90", img:"img/tornozeleira.jpg", destaque:false, descricao:"Tornozeleira dourada super charmosa, ideal para os dias quentes de verão."},
+  {nome:"Pulseira Corrente Macia", tipo:"Pulseira", categoria:"Pulseira", preco:"10,90", img:"img/pulseiracorrente.jpg", destaque:true, descricao:"Corrente macia e delicada, fecha perfeita e brilho incrível. Use com tudo!"},
+  {nome:"Anel Ajustável Folheado", tipo:"Anel", categoria:"Anel", preco:"8,90", img:"img/anelfolheado.jpg", destaque:false, descricao:"Anel ajustável super versátil. Combina com qualquer dedo e qualquer estilo."},
+  {nome:"Brinco Estrela Cadente", tipo:"Brinco", categoria:"Brinco", preco:"16,90", img:"img/brincoestrela.jpg", destaque:false, descricao:"Brinco estrela que brilha e encanta. Perfeito para noites mágicas."},
+  {nome:"Colar Gota Azul", tipo:"Colar", categoria:"Colar", preco:"22,90", img:"img/colargota.jpg", destaque:true, descricao:"Colar com pingente em gota azul profundo. Elegante e marcante."}
 ];
 
-function render(){
+let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+
+function salvarFavoritos() {
+  localStorage.setItem("favoritos", JSON.stringify(favoritos));
+  atualizarInterfaceFavoritos();
+}
+
+function toggleFavorito(idProduto) {
+  const index = favoritos.indexOf(idProduto);
+  if (index === -1) {
+    favoritos.push(idProduto);
+  } else {
+    favoritos.splice(index, 1);
+  }
+  salvarFavoritos();
+  render(); // recarrega os cards para atualizar corações
+}
+
+function atualizarInterfaceFavoritos() {
+  const qtd = favoritos.length;
+  const favCard = document.getElementById("favCard");
+  const favCountDisplay = document.getElementById("favCountDisplay");
+  
+  if (favCountDisplay) favCountDisplay.innerText = qtd;
+  
+  // Mostrar card se tiver 3 ou mais favoritos
+  if (qtd >= 3) {
+    favCard.classList.add("show");
+    // Lista resumida dos favoritos
+    const listaFav = favoritos.map(id => {
+      const prod = produtos.find(p => p.nome === id);
+      return prod ? `• ${prod.nome} (R$ ${prod.preco})` : "";
+    }).filter(t => t).join("<br>");
+    document.getElementById("favLista").innerHTML = listaFav || "Nenhum produto";
+    
+    // Monta mensagem para WhatsApp
+    const produtosFav = favoritos.map(id => produtos.find(p => p.nome === id)).filter(p => p);
+    let msg = "💖 Olá! Estes são os produtos que selecionei como favoritos:\n\n";
+    produtosFav.forEach((p, idx) => {
+      msg += `${idx+1}. ${p.nome} (${p.tipo}) - R$ ${p.preco}\n`;
+    });
+    msg += "\nGostaria de finalizar minha compra! 💙";
+    document.getElementById("whatsappFavLink").href = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
+  } else {
+    favCard.classList.remove("show");
+  }
+}
+
+function fecharFavCard() {
+  document.getElementById("favCard").classList.remove("show");
+}
+
+let categoriaAtiva = "todos";
+
+function render() {
+  const produtosFiltrados = categoriaAtiva === "todos" 
+    ? produtos 
+    : produtos.filter(p => p.categoria === categoriaAtiva);
+  
   const grid = document.getElementById("catalogo");
   grid.innerHTML = "";
-
-  produtos.forEach(p => {
+  
+  produtosFiltrados.forEach(p => {
+    const isFav = favoritos.includes(p.nome);
     grid.innerHTML += `
-      <div class="card" onclick="abrirModal('${p.nome}','${p.tipo} - Peça única e delicada','${p.img}')">
-        <img src="${p.img}" alt="${p.nome}" onerror="this.src='https://placehold.co/600x800?text=Imagem+Breve'">
-        <p>${p.nome}</p>
-        <span class="price">R$ ${p.preco}</span>
+      <div class="card" data-nome="${p.nome}">
+        <div class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorito('${p.nome}')">
+          <i class="fas fa-heart"></i>
+        </div>
+        <img src="${p.img}" alt="${p.nome}" onerror="this.src='https://placehold.co/600x800?text=Imagem+Breve'" onclick="abrirModal('${p.nome}','${p.tipo}','${p.preco}','${p.img}','${p.descricao}')">
+        <p onclick="abrirModal('${p.nome}','${p.tipo}','${p.preco}','${p.img}','${p.descricao}')">${p.nome}</p>
+        <span class="price" onclick="abrirModal('${p.nome}','${p.tipo}','${p.preco}','${p.img}','${p.descricao}')">R$ ${p.preco}</span>
       </div>
     `;
   });
-
+  
   animarEntrada();
 }
 
 function renderVendidos(){
   const area = document.getElementById("maisVendidos");
   area.innerHTML = "";
-
   const destaqueProdutos = produtos.filter(p => p.destaque === true);
-  
   destaqueProdutos.forEach(p => {
     area.innerHTML += `
-      <div class="card-vendido" onclick="abrirModal('${p.nome}','${p.tipo} - Peça única e delicada','${p.img}')">
+      <div class="card-vendido" onclick="abrirModal('${p.nome}','${p.tipo}','${p.preco}','${p.img}','${p.descricao}')">
         <div class="tag">Mais vendido</div>
         <img src="${p.img}" alt="${p.nome}" onerror="this.src='https://placehold.co/600x800?text=Imagem+Breve'">
         <p>${p.nome}</p>
@@ -412,14 +904,11 @@ function renderVendidos(){
       </div>
     `;
   });
-
   animarEntrada();
 }
 
-/* animação ao aparecer */
 function animarEntrada(){
   const elementos = document.querySelectorAll('.card, .card-vendido');
-
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if(entry.isIntersecting){
@@ -427,43 +916,50 @@ function animarEntrada(){
       }
     });
   }, { threshold: 0.1 });
-
   elementos.forEach(el => observer.observe(el));
 }
 
-function abrirModal(nome, desc, img){
+function abrirModal(nome, tipo, preco, img, descricao){
   const modal = document.getElementById("modal");
   modal.classList.add("active");
-  
+  document.body.style.overflow = "hidden";
   document.getElementById("modal-title").innerText = nome;
-  document.getElementById("modal-desc").innerText = desc;
+  document.getElementById("modal-tipo").innerText = tipo;
+  document.getElementById("modal-preco").innerHTML = `R$ ${preco}`;
+  document.getElementById("modal-desc").innerText = descricao;
   document.getElementById("modal-img").src = img;
-  
-  // Tratamento para imagem quebrada no modal
   const modalImg = document.getElementById("modal-img");
   modalImg.onerror = function() {
     this.src = 'https://placehold.co/600x800?text=Imagem+Breve';
   };
-
-  const msg = `Oi! Tenho interesse nesse produto: ${nome} - ${desc}`;
-  document.getElementById("whatsapp-link").href =
-    `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
+  const msg = `Olá! 💙 Vi o catálogo e me interessei por:\n\n*${nome}* (${tipo})\n💰 Valor: R$ ${preco}\n\nGostaria de mais informações!`;
+  document.getElementById("whatsapp-link").href = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
 }
 
 function fecharModal(){
-  document.getElementById("modal").classList.remove("active");
+  const modal = document.getElementById("modal");
+  modal.classList.remove("active");
+  document.body.style.overflow = "auto";
 }
 
-// Fechar modal ao clicar fora do conteúdo
 window.onclick = function(event) {
   const modal = document.getElementById("modal");
-  if (event.target === modal) {
-    fecharModal();
-  }
+  if (event.target === modal) fecharModal();
 }
+
+// Filtro por categorias
+document.querySelectorAll(".cat-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    categoriaAtiva = btn.getAttribute("data-categoria");
+    render();
+  });
+});
 
 render();
 renderVendidos();
+atualizarInterfaceFavoritos();
 
 </script>
 
